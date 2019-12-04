@@ -19,7 +19,34 @@ const chapter1 = function(container) {
   const w2 = rnd();
   const b = rnd();
 
-  const out = x1 * w1 + x2 * w2 + b;
+  const y = x1 * w1 + x2 * w2 + b;
+
+  const ft = x => {
+    const t = new PIXI.Text(x);
+    container.addChild(t);
+    return t;
+  };
+
+  const deltaY = 200;
+  const inputX = 100;
+  let inputY = 100;
+  const x1t = ft("x1");
+  x1t.x = inputX;
+  x1t.y = inputY;
+  const x2t = ft("x2");
+  x2t.x = inputX;
+  inputY += deltaY;
+  x2t.y = inputY;
+
+  const outputX = 200;
+  let outputY = 100;
+
+  const wt1 = ft("w1");
+  w1t.x = outputX;
+  w1t.y = outputY;
+  w1t
+  const w2t = ft("w2");
+  const yt = ft("y");
 };
 
 const pixi = function() {
