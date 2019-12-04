@@ -1,0 +1,24 @@
+{
+  "name": "neural-network-play",
+  "version": "0.0.1",
+  "description": "Playing around with neural networks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emnh/neural-network-play.git"
+  },
+  "author": "Eivind Magnus Hvidevold <hvidevold@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emnh/neural-network-play/issues"
+  },
+  "homepage": "https://github.com/emnh/neural-network-play#readme",
+  "dependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
