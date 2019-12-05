@@ -14,15 +14,6 @@ const chapter1 = function(state) {
 
   const rnd = Math.random;
 
-  const x1 = rnd();
-  const x2 = rnd();
-
-  const w1 = rnd();
-  const w2 = rnd();
-  const b = rnd();
-
-  const y = x1 * w1 + x2 * w2 + b;
-
   const ft = x => {
     const style = new PIXI.TextStyle({
       fill: '#ffffff'
@@ -48,6 +39,24 @@ const chapter1 = function(state) {
     g.lineTo(ct2.x - ct2.width / 2, ct2.y);
     state.container.addChild(g);
     return g;
+  };
+
+  const slider = (name) => {
+    const s1 = $('<p>' + name + '</p>');
+    const s2 = $(
+      '<input type="range" min="0" max="1" value="0.5" step="0.01" class="slider" id="' + name + '">');
+    const s3 = $('<p>0.5</p>');
+    s2.on('input', () => {
+      s3.html(s2.val());
+    });
+    $("body").append(s1);
+    $("body").append(s2);
+    $("body").append(s3);
+    return {
+      s1: s1,
+      s2: s2,
+      s3: s3
+    };
   };
 
   const deltaX = 100;
@@ -95,6 +104,31 @@ const chapter1 = function(state) {
   line(h1t, yt);
   line(h2t, yt);
   line(bt, yt);
+
+  const x1s = slider('x1');
+  const x2s = slider('x2');
+  const w1s = slider('w1');
+  const w2s = slider('w2');
+  const bs = slider('b');
+  const ys = slider('y');
+
+  const evalNet = () => {
+    const x1 = parseFloat(x1s.s2.val());
+    const x2 = parseFloat(x2s.s2.val());
+    const w1 = parseFloat(w1s.s2.val());
+    const w2 = parseFloat(w2s.s2.val());
+    const b = parseFloat(bs.s2.val());
+    const y = x1 * w1 + x2 * w2 + b;
+    console.log(y);
+    ys.s3.html(y);
+    //ys.s2.val(y);
+    //ys.trigger('change');
+  };
+  x1s.s2.on('input', evalNet);
+  x2s.s2.on('input', evalNet);
+  w1s.s2.on('input', evalNet);
+  w2s.s2.on('input', evalNet);
+  bs.s2.on('input', evalNet);
 };
 
 const pixi = function() {
