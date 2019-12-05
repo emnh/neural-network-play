@@ -2,15 +2,17 @@ import * as PIXI from 'pixi.js'
 
 const $ = require('jquery');
 
-const chapter1 = function(container) {
+const chapter1 = function(state) {
 
-  const chaperIndex = 1;
+  const chapterIndex = 1;
 
   const title = "<h1>Neural Networks: Chapter" + chapterIndex + "</h1>";
 
   $("body").append(title);
 
-  const rnd = Math.random();
+  document.body.appendChild(state.app.view);
+
+  const rnd = Math.random;
 
   const x1 = rnd();
   const x2 = rnd();
@@ -22,12 +24,35 @@ const chapter1 = function(container) {
   const y = x1 * w1 + x2 * w2 + b;
 
   const ft = x => {
-    const t = new PIXI.Text(x);
-    container.addChild(t);
-    return t;
+    const style = new PIXI.TextStyle({
+      fill: '#ffffff'
+    });
+    const t = new PIXI.Text(x, style);
+    const graphics = new PIXI.Graphics();
+    graphics.beginFill(0x8080FF, 1);
+    graphics.drawCircle(0, 0, 25);
+    graphics.endFill();
+    const ct = new PIXI.Container();
+    ct.addChild(graphics);
+    ct.addChild(t)
+    t.x -= t.width / 2;
+    t.y -= t.height / 2;
+    state.container.addChild(ct);
+    return ct;
   };
 
+  const line = (ct1, ct2) => {
+    const g = new PIXI.Graphics();
+    g.moveTo(ct1.x + ct1.width / 2, ct1.y);
+    g.lineStyle(1);
+    g.lineTo(ct2.x - ct2.width / 2, ct2.y);
+    state.container.addChild(g);
+    return g;
+  };
+
+  const deltaX = 100;
   const deltaY = 200;
+
   const inputX = 100;
   let inputY = 100;
   const x1t = ft("x1");
@@ -38,56 +63,54 @@ const chapter1 = function(container) {
   inputY += deltaY;
   x2t.y = inputY;
 
-  const outputX = 200;
+  const outputX = 300;
   let outputY = 100;
 
-  const wt1 = ft("w1");
-  w1t.x = outputX;
-  w1t.y = outputY;
-  w1t
-  const w2t = ft("w2");
+  const h1t = ft("h1");
+  h1t.x = outputX;
+  h1t.y = outputY;
+
+  const h2t = ft("h2");
+  h2t.x = outputX;
+  outputY += deltaY;
+  h2t.y = outputY;
+
+  const biasX = 300;
+  const biasY = 200;
+  const bt = ft("b");
+  bt.x = biasX;
+  bt.y = biasY;
+
+  const resultX = 500;
+  const resultY = 200;
+
   const yt = ft("y");
+  yt.x = resultX;
+  yt.y = resultY;
+
+  line(x1t, h1t);
+  line(x1t, h2t);
+  line(x2t, h1t);
+  line(x2t, h2t);
+  line(h1t, yt);
+  line(h2t, yt);
+  line(bt, yt);
 };
 
 const pixi = function() {
   const app = new PIXI.Application({
-    width: 800, height: 600, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
+    width: 800, height: 600, backgroundColor: 0xFFFFFF, resolution: window.devicePixelRatio || 1,
   });
-  document.body.appendChild(app.view);
 
   const container = new PIXI.Container();
 
   app.stage.addChild(container);
 
-  // Create a new texture
-  const texture = PIXI.Texture.from('examples/assets/bunny.png');
-
-  // Create a 5x5 grid of bunnies
-  for (let i = 0; i < 25; i++) {
-      const bunny = new PIXI.Sprite(texture);
-      bunny.anchor.set(0.5);
-      bunny.x = (i % 5) * 40;
-      bunny.y = Math.floor(i / 5) * 40;
-      container.addChild(bunny);
-  }
-
-  // Move container to the center
-  container.x = app.screen.width / 2;
-  container.y = app.screen.height / 2;
-
-  // Center bunny sprite in local container coordinates
-  container.pivot.x = container.width / 2;
-  container.pivot.y = container.height / 2;
-
-  // Listen for animate update
-  app.ticker.add((delta) => {
-      // rotate the container!
-      // use delta to create frame-independent transform
-      container.rotation -= 0.01 * delta;
-  });
-
-  return container;
+  return {
+    app: app,
+    container: container
+  };
 };
 
-const container = pixi();
-chapter(container);
+const state = pixi();
+chapter1(state);
